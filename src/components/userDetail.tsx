@@ -11,7 +11,9 @@ const UserDetail = ({
         {title} {firstName} {lastName}
       </td>
       <td>{userName}</td>
-      <td>{thumbnail}</td>
+      <td>
+        <img src={thumbnail} />
+      </td>
     </tr>
   );
 };

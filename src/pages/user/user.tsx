@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import PaginationItem from "../../components/paginationItem";
 import UserDetail from "../../components/userDetail";
 import { IUser, products } from "../../services/userService";
+import queryString from "query-string";
 import "./user.scss";
 
 const User = () => {
@@ -13,6 +14,9 @@ const User = () => {
   const pageNumbers = [];
   const [isUp, setIsUp] = useState(true);
   const [isUpUN, setIsUpUN] = useState(true);
+  const [search, setSearch] = useState(
+    queryString.parse(window.location.search)
+  );
   let paginationList: any[] = [];
 
   useEffect(() => {
@@ -24,6 +28,8 @@ const User = () => {
   }, []);
 
   useEffect(() => {
+    if (search.result) setCurrentPage(Number(search.result));
+
     if (users) {
       setUserInPage(
         users
@@ -73,7 +79,10 @@ const User = () => {
 
   const handleClick = (cPage: number) => {
     setCurrentPage(cPage);
+    setSearch({ result: `${cPage}` });
     setUserInPage(users.slice((cPage - 1) * 10, cPage * 10));
+    // window.location.search = Number(search.result)
+    window.history.replaceState(null, "New Page Title", "/?result=" + cPage);
   };
 
   const sortUsers = (nameSort: string) => {
