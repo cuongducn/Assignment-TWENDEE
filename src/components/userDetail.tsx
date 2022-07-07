@@ -1,4 +1,5 @@
 const UserDetail = ({
+  idx,
   title,
   firstName,
   lastName,
@@ -7,6 +8,7 @@ const UserDetail = ({
 }: any) => {
   return (
     <tr className="table-content">
+      <td>{idx + 1}</td>
       <td>
         {title} {firstName} {lastName}
       </td>

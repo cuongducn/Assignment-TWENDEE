@@ -33,7 +33,7 @@ const User = () => {
     if (users) {
       setUserInPage(
         users
-          .slice(1, 10)
+          .slice(0, 10)
           .sort((a, b) => a.firstName!.localeCompare(b.firstName!))
       );
       setTotalItem(Math.round(users.length / pages));
@@ -81,7 +81,6 @@ const User = () => {
     setCurrentPage(cPage);
     setSearch({ result: `${cPage}` });
     setUserInPage(users.slice((cPage - 1) * 10, cPage * 10));
-    // window.location.search = Number(search.result)
     window.history.replaceState(null, "New Page Title", "/?result=" + cPage);
   };
 
@@ -115,6 +114,7 @@ const User = () => {
       <table className="table">
         <thead>
           <tr className="table-header">
+            <th>STT</th>
             <th>
               <div className="sort-by" onClick={() => sortUsers("FN")}>
                 Full Name{" "}
@@ -150,6 +150,7 @@ const User = () => {
                   <UserDetail
                     key={idx}
                     {...{
+                      idx,
                       title: ele.title,
                       firstName: ele.firstName,
                       lastName: ele.lastName,
