@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PaginationItem from "../../components/paginationItem";
 import UserDetail from "../../components/userDetail";
-import { IUser, products } from "../../services/userService";
+import { IUser, getUsers } from "../../services/userService";
 import queryString from "query-string";
 import "./user.scss";
 
@@ -12,8 +12,8 @@ const User = () => {
   const [totalItem, setTotalItem] = useState<number>(0);
   const [userInPage, setUserInPage] = useState<IUser[]>([]);
   const pageNumbers = [];
-  const [isUp, setIsUp] = useState(true);
-  const [isUpUN, setIsUpUN] = useState(true);
+  const [isUp, setIsUp] = useState(false);
+  const [isUpUN, setIsUpUN] = useState(false);
   const [search, setSearch] = useState(
     queryString.parse(window.location.search)
   );
@@ -21,14 +21,14 @@ const User = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const res = await products({ results: 100 });
+      const res = await getUsers({ results: 100 });
       setUsers(res);
     };
     getUser();
   }, []);
 
   useEffect(() => {
-    if (search.result) setCurrentPage(Number(search.result));
+    if (search.page) setCurrentPage(Number(search.page));
 
     if (users) {
       setUserInPage(
@@ -47,6 +47,7 @@ const User = () => {
   }
 
   const lengPageNumbers = pageNumbers.length - 1;
+
   if (totalItem > 7) {
     if (currentPage < 5)
       paginationList = [
@@ -79,9 +80,9 @@ const User = () => {
 
   const handleClick = (cPage: number) => {
     setCurrentPage(cPage);
-    setSearch({ result: `${cPage}` });
+    setSearch({ page: `${cPage}` });
     setUserInPage(users.slice((cPage - 1) * 10, cPage * 10));
-    window.history.replaceState(null, "New Page Title", "/?result=" + cPage);
+    window.history.replaceState(null, "New Page Title", "/?page=" + cPage);
   };
 
   const sortUsers = (nameSort: string) => {

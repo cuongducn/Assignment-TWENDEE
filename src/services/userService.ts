@@ -13,10 +13,10 @@ export interface IParams {
   page?: number;
 }
 
-export const products = async (params: IParams) => {
+export const getUsers = async (params: IParams) => {
   const getDataUser = await axiosClient.get("", { params });
   const data = getDataUser.data.results.map((ele: any) => {
-    return {
+    return <IUser>{
       title: ele.name.title,
       firstName: ele.name.first,
       lastName: ele.name.last,
